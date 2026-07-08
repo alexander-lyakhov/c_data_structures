@@ -25,7 +25,7 @@ int main()
 	system("cls");
 
 	Vector ints;
-	Vector_init(&ints, sizeof(int));
+	Vector_init(&ints, sizeof(int), 0);
 
 	// *******************************************
 	title("Vector setup");

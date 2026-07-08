@@ -27,7 +27,7 @@ typedef struct {
 } Vector;
 
 static void Vector_check_capacity(Vector *vector);
-Vector* Vector_init(Vector *vector, short type_size);
+Vector* Vector_init(Vector *vector, short type_size, size_t capacity);
 void    Vector_push_backc(Vector *vector, char value);
 void    Vector_push_backs(Vector *vector, short value);
 void    Vector_push_backi(Vector *vector, int value);
@@ -53,18 +53,18 @@ void    Vector_destroy(Vector *vector);
 #define Vector_push_backld  Vector_push_back_ld
 #define Vector_push_backstr Vector_push_back_str
 
-#define VECTOR_IMPLEMENTATION
+// #define VECTOR_IMPLEMENTATION
 
 #ifdef VECTOR_IMPLEMENTATION
 // =============================================================================
 // @@@ + Vector_init
 // =============================================================================
-Vector* Vector_init(Vector *vector, short type_size)
+Vector* Vector_init(Vector *vector, short type_size, size_t capacity)
 {
 	printf("Vector_init. Type size: %d\n", type_size);
 
 	vector->data = malloc(type_size * DEFAULT_VECTOR_CAPACITY);
-	vector->capacity = DEFAULT_VECTOR_CAPACITY;
+	vector->capacity = capacity ? capacity : DEFAULT_VECTOR_CAPACITY;
 	vector->count = 0;
 	vector->type_size = type_size;
 
