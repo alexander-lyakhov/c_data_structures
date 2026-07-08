@@ -37,6 +37,7 @@ void    Vector_push_backf(Vector *vector, float value);
 void    Vector_push_backd(Vector *vector, double value);
 void    Vector_push_backld(Vector *vector, long double value);
 void    Vector_push_backstr(Vector *vector, char* value);
+void    Vector_push_backptr(Vector *vector, void* value);
 void    Vector_pop_back(Vector *vector);
 void*   Vector_front(Vector *vector);
 void*   Vector_back(Vector *vector);
@@ -52,6 +53,7 @@ void    Vector_destroy(Vector *vector);
 #define Vector_push_backd   Vector_push_back_d
 #define Vector_push_backld  Vector_push_back_ld
 #define Vector_push_backstr Vector_push_back_str
+#define Vector_push_backptr Vector_push_back_ptr
 
 // #define VECTOR_IMPLEMENTATION
 
@@ -188,6 +190,18 @@ void Vector_push_backstr(Vector *vector, char* value)
 
 	#ifdef VECTOR_DEBUG
 		printf("Vector_push_backstr: %s, %d\n", value, vector->capacity);
+	#endif
+}
+
+// =============================================================================
+// @@@ + Vector_push_backptr
+// =============================================================================
+void Vector_push_backptr(Vector *vector, void* value)
+{
+	Vector_append(vector, value);
+
+	#ifdef VECTOR_DEBUG
+		printf("Vector_push_backptr: %p, %d\n", value, vector->capacity);
 	#endif
 }
 
