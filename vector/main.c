@@ -1,164 +1,22 @@
 #include <stdio.h>
 #include <conio.h>
 #include <assert.h>
-#include <windows.h>
+// #include <windows.h>
+
+
+#define VECTOR_IMPLEMENTATION
+#include "vector.h"
+
+// TODO
+// void* front()
+// void* back()
+// clear()
 
 #define LINE puts("----------------------------------------------");
 
-#define DEFAULT_VECTOR_CAPACITY 256
-
-#define Vector_append(vector, value)                                                \
-{                                                                                   \
-	Vector_check_capacity(vector);                                                  \
-	void *target = (vector)->data + (vector)->count * (vector)->type_size;          \
-	memcpy(target, &(value), (vector)->type_size);                                  \
-	(vector)->count++;                                                              \
-}                                                                                   \
-
-#define Vector_size(vector) (vector)->count
-#define Vector_data(vector) (vector)->data
-
-typedef struct {
-	void *data;
-	size_t capacity;
-	size_t count;
-	short type_size;
-
-} Vector;
-
-// =============================================================================
-// @@@ + Vector_init
-// =============================================================================
-Vector* Vector_init(Vector *vector, short type_size)
-{
-	printf("Vector_init: %d\n", type_size);
-
-	vector->data = malloc(type_size * DEFAULT_VECTOR_CAPACITY);
-	vector->capacity = DEFAULT_VECTOR_CAPACITY;
-	vector->count = 0;
-	vector->type_size = type_size;
-
-	return vector;
-}
-
-// =============================================================================
-// @@@ - Vector_check_capacity
-// =============================================================================
-static void Vector_check_capacity(Vector *vector)
-{
-	if (vector->count >= vector->capacity)
-	{
-		vector->capacity *= 1.5;
-		vector->data = realloc(vector->data, vector->capacity * vector->type_size);
-	}
-}
-
-// =============================================================================
-// @@@ + Vector_push_backc
-// =============================================================================
-void Vector_push_backc(Vector *vector, char value)
-{
-	Vector_append(vector, value);
-	printf("Vector_push_backc: %c, %d\n", value, vector->capacity);
-}
-
-// =============================================================================
-// @@@ + Vector_push_backs
-// =============================================================================
-void Vector_push_backs(Vector *vector, short value)
-{
-	Vector_append(vector, value);
-	printf("Vector_push_backs: %d, %d\n", value, vector->capacity);
-}
-
-// =============================================================================
-// @@@ + Vector_push_backi
-// =============================================================================
-void Vector_push_backi(Vector *vector, int value)
-{
-	Vector_append(vector, value);
-	printf("Vector_push_backi: %d, %d\n", value, vector->capacity);
-}
-
-// =============================================================================
-// @@@ + Vector_push_backl
-// =============================================================================
-void Vector_push_backl(Vector *vector, long value)
-{
-	Vector_append(vector, value);
-	printf("Vector_push_backl: %l, %d\n", value, vector->capacity);
-}
-
-// =============================================================================
-// @@@ + Vector_push_backll
-// =============================================================================
-void Vector_push_backll(Vector *vector, long long value)
-{
-	Vector_append(vector, value);
-	printf("Vector_push_backll: %ll, %d\n", value, vector->capacity);
-}
-
-// =============================================================================
-// @@@ + Vector_push_backf
-// =============================================================================
-void Vector_push_backf(Vector *vector, float value)
-{
-	Vector_append(vector, value);
-	printf("Vector_push_backf: %.3f, %d\n", value, vector->capacity);
-}
-
-// =============================================================================
-// @@@ + Vector_push_backd
-// =============================================================================
-void Vector_push_backd(Vector *vector, double value)
-{
-	Vector_append(vector, value);
-	printf("Vector_push_backd: %.3f, %d\n", value, vector->type_size);
-}
-
-// =============================================================================
-// @@@ + Vector_push_backld
-// =============================================================================
-void Vector_push_backld(Vector *vector, long double value)
-{
-	Vector_append(vector, value);
-	printf("Vector_push_backld: %.3Lf, %d\n", value, vector->type_size);
-}
-
-// =============================================================================
-// @@@ + Vector_push_backstr
-// =============================================================================
-void Vector_push_backstr(Vector *vector, char* value)
-{
-	Vector_append(vector, value);
-	printf("Vector_push_backstr: %s, %d\n", value, vector->capacity);
-}
-
-// =============================================================================
-// @@@ + Vector_pop_back
-// =============================================================================
-void Vector_pop_back(Vector *vector)
-{
-	if (vector->count)
-		vector->count--;
-}
-
-// =============================================================================
-// @@@ + Vector_destroy
-// =============================================================================
-void Vector_destroy(Vector *vector)
-{
-	free(vector->data);
-
-	vector->data      = NULL;
-	vector->capacity  = 0;
-	vector->count     = 0;
-	vector->type_size = 0;
-}
-
 int main()
 {
-	system("cls");
+	// system("cls");
 
 	LINE;
 	

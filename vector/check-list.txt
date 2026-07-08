@@ -1,0 +1,15 @@
+
+ 1. Init vector
+ 2. Get and print first and last element from empty vector
+ 3. Setup vector with 1 element
+ 4. Get and print first and last element from empty vector one more time
+ 5. Setup vector with data
+ 6. Remove last elemet and replace it with new value
+ 7. Update any value with new one
+ 8. Remove all elements. Remove more elements then vector has
+ 9. Setup vector with data
+10. Iterate vector
+11. Clear vector
+12. Iterate vector
+13. Setup vector with data
+14. Iterate vector
