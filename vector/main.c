@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <conio.h>
+#include <assert.h>
 #include <windows.h>
 
 #define LINE puts("----------------------------------------------");
@@ -53,12 +54,48 @@ static void Vector_check_capacity(Vector *vector)
 }
 
 // =============================================================================
+// @@@ + Vector_push_backc
+// =============================================================================
+void Vector_push_backc(Vector *vector, char value)
+{
+	Vector_append(vector, value);
+	printf("Vector_push_backc: %c, %d\n", value, vector->capacity);
+}
+
+// =============================================================================
+// @@@ + Vector_push_backs
+// =============================================================================
+void Vector_push_backs(Vector *vector, short value)
+{
+	Vector_append(vector, value);
+	printf("Vector_push_backs: %d, %d\n", value, vector->capacity);
+}
+
+// =============================================================================
 // @@@ + Vector_push_backi
 // =============================================================================
 void Vector_push_backi(Vector *vector, int value)
 {
 	Vector_append(vector, value);
-	printf("%d, %d\n", value, vector->capacity);
+	printf("Vector_push_backi: %d, %d\n", value, vector->capacity);
+}
+
+// =============================================================================
+// @@@ + Vector_push_backl
+// =============================================================================
+void Vector_push_backl(Vector *vector, long value)
+{
+	Vector_append(vector, value);
+	printf("Vector_push_backl: %l, %d\n", value, vector->capacity);
+}
+
+// =============================================================================
+// @@@ + Vector_push_backll
+// =============================================================================
+void Vector_push_backll(Vector *vector, long long value)
+{
+	Vector_append(vector, value);
+	printf("Vector_push_backll: %ll, %d\n", value, vector->capacity);
 }
 
 // =============================================================================
@@ -67,7 +104,7 @@ void Vector_push_backi(Vector *vector, int value)
 void Vector_push_backf(Vector *vector, float value)
 {
 	Vector_append(vector, value);
-	printf("%.3f, %d\n", value, vector->capacity);
+	printf("Vector_push_backf: %.3f, %d\n", value, vector->capacity);
 }
 
 // =============================================================================
@@ -76,7 +113,16 @@ void Vector_push_backf(Vector *vector, float value)
 void Vector_push_backd(Vector *vector, double value)
 {
 	Vector_append(vector, value);
-	printf("%.3f, %d\n", value, vector->type_size);
+	printf("Vector_push_backd: %.3f, %d\n", value, vector->type_size);
+}
+
+// =============================================================================
+// @@@ + Vector_push_backld
+// =============================================================================
+void Vector_push_backld(Vector *vector, long double value)
+{
+	Vector_append(vector, value);
+	printf("Vector_push_backld: %.3Lf, %d\n", value, vector->type_size);
 }
 
 // =============================================================================
@@ -85,7 +131,16 @@ void Vector_push_backd(Vector *vector, double value)
 void Vector_push_backstr(Vector *vector, char* value)
 {
 	Vector_append(vector, value);
-	printf("%s, %d\n", value, vector->capacity);
+	printf("Vector_push_backstr: %s, %d\n", value, vector->capacity);
+}
+
+// =============================================================================
+// @@@ + Vector_pop_back
+// =============================================================================
+void Vector_pop_back(Vector *vector)
+{
+	if (vector->count)
+		vector->count--;
 }
 
 // =============================================================================
@@ -107,14 +162,37 @@ int main()
 
 	LINE;
 	
+	Vector vectorc;
+	Vector_init(&vectorc, sizeof(char));
+
+	LINE;
+
+	Vector_push_backc(&vectorc, 'a');
+	Vector_push_backc(&vectorc, 'b');
+	Vector_push_backc(&vectorc, 'c');
+
+	puts("");
+
+	char *datac = vectorc.data;
+
+	for (int i = 0; i < Vector_size(&vectorc); i++) {
+		printf("data: %c\n", datac[i]);
+	}
+
+	Vector_destroy(&vectorc);
+
+	// ==============================================
+	
+	LINE;
+	
 	Vector vectori;
 	Vector_init(&vectori, sizeof(int));
 
 	LINE;
 
-	Vector_push_backi(&vectori, 10);
-	Vector_push_backi(&vectori, 20);
-	Vector_push_backi(&vectori, 30);
+	Vector_push_backi(&vectori, -10);
+	Vector_push_backi(&vectori, -20);
+	Vector_push_backi(&vectori, -30);
 
 	puts("");
 
@@ -123,9 +201,18 @@ int main()
 	for (int i = 0; i < Vector_size(&vectori); i++) {
 		printf("data: %d\n", datai[i]);
 	}
-	
-	Vector_destroy(&vectori);
 
+	Vector_pop_back(&vectori);
+	Vector_push_backi(&vectori, 50);
+
+	puts("");
+
+	for (int i = 0; i < vectori.count; i++) {
+		printf("data: %d\n", ((int*)vectori.data)[i]);
+	}
+
+	Vector_destroy(&vectori);
+	
 	// ==============================================
 
 	LINE;
@@ -158,9 +245,9 @@ int main()
 
 	LINE;
 
-	Vector_push_backf(&vectord, 10.1);
-	Vector_push_backf(&vectord, 20.2);
-	Vector_push_backf(&vectord, 30.3);
+	Vector_push_backd(&vectord, 10.1);
+	Vector_push_backd(&vectord, 20.2);
+	Vector_push_backd(&vectord, 30.3);
 	
 	puts("");
 
