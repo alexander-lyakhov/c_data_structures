@@ -6,7 +6,7 @@
 
 |Method|Descrition|
 |-|-|
-|`Vector* Vector_init(Vector *vector, short type_size, size_t capacity`)|Init vector|
+|`Vector* Vector_init(Vector *v, short type_size, size_t capacity`)|Init vector|
 |`void Vector_push_back_c(Vector *v, char value)`|Push a character to the end of the vector|
 |`void Vector_push_back_s(Vector *v, short value)`|Push a short type value to the end of the vector|
 |`void Vector_push_back_i(Vector *v, int value)`|Push an integer type value to the end of the vector|
