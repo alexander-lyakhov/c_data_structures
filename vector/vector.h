@@ -1,3 +1,135 @@
+/*
+-----------------------------------------------------------------
+STB-style single-header-file Vector implementation for C language
+The std::vector from the STL library was used as a reference.
+-----------------------------------------------------------------
+
+HOW TO USE
+
+// **************************************************************************************************
+//  Primitives data types example
+// **************************************************************************************************
+
+	// Create Vector instance
+	Vector ints;
+
+	// Init vector. 3-d parameter is desired vector capacity. If 0 then capacity set to default value.
+	Vector_init(&ints, sizeof(int), 0);
+
+	// Add elements to vector
+	Vector_push_back_i(&ints, 10);
+	Vector_push_back_i(&ints, 20);
+	Vector_push_back_i(&ints, 30);
+	Vector_push_back_i(&ints, 40);
+	Vector_push_back_i(&ints, 50);
+
+	// Get first and last elements of vector
+	int *first = Vector_front(&ints);
+	int *last  = Vector_back(&ints);
+
+	// Remove last elemet from vector
+	Vector_pop_back(&ints);
+
+	// Change vector element value
+	size_t index = 0;
+	((int*)ints.data)[index] = 333;
+
+	// Iterate vector
+	int *data = ints.data;
+
+	for (int i = 0; i < Vector_size(&ints); i++) {
+		printf("data: %4d\n", data[i]);
+	}
+
+	// Clear vector
+	Vector_clear(&ints);
+
+	// Destroy vector
+	Vector_destroy(&ints);
+
+
+// **************************************************************************************************
+//  Pointers eexample
+// **************************************************************************************************
+
+	typedef struct { int x, y; } Point;
+
+	// Create Vector instance
+	Vector ptrs;
+
+	// Init vector. 3-d parameter is desired vector capacity. If 0 then capacity set to default value.
+	Vector_init(&ptrs, sizeof(void*), 0);
+
+	// Add elements to vector
+	Point p1 = {1, 2};
+	Point p2 = {3, 4};
+
+	Vector_push_back_ptr(&ptrs, &p1);
+	Vector_push_back_ptr(&ptrs, &p2);
+	Vector_push_back_ptr(&ptrs, &(Point){5, 6});
+	Vector_push_back_ptr(&ptrs, &(Point){7, 8});
+
+	// Remove last elemet from vector
+	Vector_pop_back(&ptrs);
+
+	// Change vector element value
+	size_t index = 0;
+	((Point**)ptrs.data)[index] = &((Point){12, 24});
+
+	// Iterate vector
+	Point **pdata = ptrs.data;
+
+	for (int i = 0; i < Vector_size(&ptrs); i++) {
+		printf("data: 0x%p, x = %d, y = %d\n",
+			pdata[i],
+			pdata[i]->x,
+			pdata[i]->y
+		);
+	}
+
+	// Clear vector
+	Vector_clear(&ptrs);
+
+	// Destroy vector
+	Vector_destroy(&ptrs);
+
+
+// **************************************************************************************************
+//  String eexample (char*)
+// **************************************************************************************************
+
+	// Create Vector instance
+	Vector vstr;
+
+	// Init vector. 3-d parameter is desired vector capacity. If 0 then capacity set to default value.
+	Vector_init(&vstr, sizeof(char*), 0);
+
+	// Add elements to vector
+	Vector_push_back_ptr(&vstr, "one");
+	Vector_push_back_ptr(&vstr, "two");
+	Vector_push_back_ptr(&vstr, "three");
+	Vector_push_back_ptr(&vstr, "four");
+
+	// Remove last elemet from vector
+	Vector_pop_back(&vstr);
+
+	// Change vector element value
+	size_t index = 0;
+	((char**)vstr.data)[0] = "one and half";
+
+	// Iterate vector
+	char **data = vstr.data;
+
+	for (int i = 0; i < Vector_size(&vstr); i++) {
+		printf("data: 0x%p, %s\n", data[i], data[i]);
+	}
+
+	// Clear vector
+	Vector_clear(&vstr);
+
+	// Destroy vector
+	Vector_destroy(&vstr);
+*/
 #ifndef VECTOR_H_
 #define VECTOR_H_
 
