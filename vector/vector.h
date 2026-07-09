@@ -129,7 +129,9 @@ HOW TO USE
 
 	// Destroy vector
 	Vector_destroy(&vstr);
-*/
+
+************************************************************************************/
+
 #ifndef VECTOR_H_
 #define VECTOR_H_
 
