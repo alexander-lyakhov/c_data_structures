@@ -5,52 +5,52 @@
 ### Methods
 
 > #### Init vector
-> `Vector* Vector_init(Vector *vector, short type_size, size_t capacity)`
+> **`Vector* Vector_init(Vector *vector, short type_size, size_t capacity)`**
 
 > #### Push a character to the end of the vector
-> `void Vector_push_back_c(Vector *vector, char value)`
+> **`void Vector_push_back_c(Vector *vector, char value)`**
 
 > #### Push a value of type short to the end of the vector
-> `void Vector_push_back_s(Vector *vector, short value)`
+> **`void Vector_push_back_s(Vector *vector, short value)`**
 
 > #### Push a value of type int to the end of the vector
-> `void Vector_push_back_i(Vector *vector, int value)`
+> **`void Vector_push_back_i(Vector *vector, int value)`**
 
 > #### Push a value of type long to the end of the vector
-> `void Vector_push_back_l(Vector *vector, long value)`
+> **`void Vector_push_back_l(Vector *vector, long value)`**
 
 > #### Push a value of type long long to the end of the vector
-> `void Vector_push_back_ll(Vector *vector, long long value)`
+> **`void Vector_push_back_ll(Vector *vector, long long value)`**
 
 > #### Push a value of type float to the end of the vector
-> `void Vector_push_back_f(Vector *vector, float value)`
+> **`void Vector_push_back_f(Vector *vector, float value)`**
 
 > #### Push a value of type double to the end of the vector
-> `void Vector_push_back_d(Vector *vector, double value)`
+> **`void Vector_push_back_d(Vector *vector, double value)`**
 
 > #### Push a value of type long double to the end of the vector
-> `void Vector_push_back_ld(Vector *vector, long double value)`
+> **`void Vector_push_back_ld(Vector *vector, long double value)`**
 
 > #### Push a value of type char* to the end of the vector
-> `void Vector_push_back_str(Vector *vector, char* value)`
+> **`void Vector_push_back_str(Vector *vector, char* value)`**
 
 > #### Push a pointer to the end of the vector
-> `void Vector_push_back_ptr(Vector *vector, void* value)`
+> **`void Vector_push_back_ptr(Vector *vector, void* value)`**
 
 > #### Remove last element from vector
-> `void Vector_pop_back(Vector *vector)`
+> **`void Vector_pop_back(Vector *vector)`**
 
 > #### Get pointer to the first element in vector. If vector is empty the function returns NULL pointer
-> `void* Vector_front(Vector *vector)`
+> **`void* Vector_front(Vector *vector)`**
 
 > #### Get pointer to the last element in vector. If vector is empty the function returns NULL pointer
-> `void* Vector_back(Vector *vector)`
+> **`void* Vector_back(Vector *vector)`**
 
 > #### Clear vector
-> `void Vector_clear(Vector *vector)`
+> **`void Vector_clear(Vector *vector)`**
 
 > #### Destroy vector
-> `void Vector_destroy(Vector *vector)`
+> **`void Vector_destroy(Vector *vector)`**
 
 
 ### Code examples
