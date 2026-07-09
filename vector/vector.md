@@ -7,21 +7,21 @@
 |Method|Descrition|
 |-|-|
 |`Vector* Vector_init(Vector *vector, short type_size, size_t capacity`)|Init vector|
-|`void Vector_push_backc(Vector *vector, char value)`|Push a character to the end of the vector|
-|`void Vector_push_backs(Vector *vector, short value)`|Push a short type value to the end of the vector|
-|`void Vector_push_backi(Vector *vector, int value)`|Push an integer type value to the end of the vector|
-|`void Vector_push_backl(Vector *vector, long value)`|Push a long type value to the end of the vector|
-|`void Vector_push_backll(Vector *vector, long long value)`|Push a long long type value to the end of the vector|
-|`void Vector_push_backf(Vector *vector, float value)`|Push a float type value to the end of the vector|
-|`void Vector_push_backd(Vector *vector, double value)`|Push a double type value to the end of the vector|
-|`void Vector_push_backld(Vector *vector, long double value)`|Push a long double type value to the end of the vector|
-|`void Vector_push_backstr(Vector *vector, char* value)`|Push a string (char*) to the end of the vector|
-|`void Vector_push_backptr(Vector *vector, void* value)`|Push a pointer to the end of the vector|
-|`void Vector_pop_back(Vector *vector)`|Remove last element from vector|
-|`void* Vector_front(Vector *vector)`|Get pointer to the first element in vector. If vector is empty the function returns NULL pointer|
-|`void* Vector_back(Vector *vector)`|Get pointer to the last element in vector. If vector is empty the function returns NULL pointer|
-|`void Vector_clear(Vector *vector)`|Clear vector|
-|`void Vector_destroy(Vector *vector)`|Destroy vector|
+|`void Vector_push_back_c(Vector *v, char value)`|Push a character to the end of the vector|
+|`void Vector_push_back_s(Vector *v, short value)`|Push a short type value to the end of the vector|
+|`void Vector_push_back_i(Vector *v, int value)`|Push an integer type value to the end of the vector|
+|`void Vector_push_back_l(Vector *v, long value)`|Push a long type value to the end of the vector|
+|`void Vector_push_back_ll(Vector *v, long long value)`|Push a long long type value to the end of the vector|
+|`void Vector_push_back_f(Vector *v, float value)`|Push a float type value to the end of the vector|
+|`void Vector_push_back_d(Vector *v, double value)`|Push a double type value to the end of the vector|
+|`void Vector_push_back_ld(Vector *v, long double value)`|Push a long double type value to the end of the vector|
+|`void Vector_push_back_str(Vector *v, char* value)`|Push a string (char*) to the end of the vector|
+|`void Vector_push_back_ptr(Vector *v, void* value)`|Push a pointer to the end of the vector|
+|`void Vector_pop_back(Vector *v)`|Remove last element from vector|
+|`void* Vector_front(Vector *v)`|Get pointer to the first element in vector. If vector is empty the function returns NULL pointer|
+|`void* Vector_back(Vector *v)`|Get pointer to the last element in vector. If vector is empty the function returns NULL pointer|
+|`void Vector_clear(Vector *v)`|Clear vector|
+|`void Vector_destroy(Vector *v)`|Destroy vector|
 
 
 ### Code examples
