@@ -17,20 +17,23 @@ typedef struct {
 
 } Vector;
 
-#define Vector_size(arr) ((Vector*)(arr) - 1)->count
-#define Vector_capacity(arr) ((Vector*)(arr) - 1)->capacity
-#define Vector_get(data) (Vector*)(data) - 1
+#define Vector_get(arr)      (Vector*)(arr) - 1
+#define Vector_size(arr)     (Vector_get(arr))->count
+#define Vector_capacity(arr) (Vector_get(arr))->capacity
+#define Vector_clear(arr)    (Vector_get(arr))->count = 0
+#define Vector_destroy(arr)  free(Vector_get(arr))
 
 #define Vector_pop(arr) { \
-	Vector *vector = (Vector*)(arr) - 1; \
+	Vector *vector = Vector_get(arr); \
 	if (vector->count) vector->count--; \
 } \
 
-#define Vector_push_(data, value) { \
-	Vector *vector = Vector_check_capacity((Vector*)(*data) - 1); \
-	*data = (void*)(vector + 1); \
-	(*data)[vector->count++] = value; \
+#define Vector_push_(arr, value) { \
+	Vector *vector = Vector_check_capacity(Vector_get(*arr)); \
+	*arr = (void*)(vector + 1); \
+	(*arr)[vector->count++] = value; \
 } \
+
 
 // =============================================================================
 // @@@ + Vector_init
@@ -74,24 +77,22 @@ void Vector_push(int **data, int value)
 	Vector_push_(data, value);
 	
 	#ifdef VECTOR_DEBUG
-		printf("Vector_push:  0x%p, 0x%p -> %4d, capacity: %4d\n",
-			Vector_get(*data),
-			&(*data)[(Vector_get(*data))->count - 1],
-			(*data)[(Vector_get(*data))->count - 1],
-			(Vector_get(*data))->capacity
-		);
+		Vector *vector = Vector_get(*data);
+		printf("Vector_push:  0x%p, 0x%p -> %4d, capacity: %4d\n", vector, &(*data)[vector->count - 1], (*data)[vector->count - 1], vector->capacity);
 	#endif
+}
 
-	/*
+// =============================================================================
+// @@@ + Vector_push_str
+// =============================================================================
+void Vector_push_str(char ***data, char *value)
+{
+	Vector_push_(data, value);
+	
 	#ifdef VECTOR_DEBUG
-		printf("Vector_push:  0x%p, 0x%p -> %4d, capacity: %4d\n",
-			vector,
-			&(*data)[vector->count - 1],
-			(*data)[vector->count - 1],
-			vector->capacity
-		);
+		Vector *vector = Vector_get(*data);
+		printf("Vector_push:  0x%p, 0x%p -> %s, capacity: %4d\n", vector, &(*data)[vector->count - 1], (*data)[vector->count - 1], vector->capacity);
 	#endif
-	*/
 }
 
 int main()
@@ -109,7 +110,8 @@ int main()
 
 	Vector_pop(arr);
 
-	arr[0] = 11;
+	if (Vector_size(arr))
+		arr[0] = 11;
 
 	/*for (int i = 0; i < 20; i++)
 		Vector_push(&arr, i * 10);*/
@@ -123,8 +125,36 @@ int main()
 			Vector_capacity(arr)
 		);
 
-	printf("Vector_front: %4d\n", arr[0]);
-	printf("Vector_back:  %4d\n", arr[Vector_size(arr) - 1]);
+	// Vector_clear(arr);
+
+	if (Vector_size(arr))
+	{
+		printf("Vector_front: %4d\n", arr[0]);
+		printf("Vector_back:  %4d\n", arr[Vector_size(arr) - 1]);
+	}
+
+	puts("");
+
+	Vector_destroy(arr);
+
+	char **str = Vector_init(sizeof(char*));
+
+	Vector_push_str(&str, "one");
+	Vector_push_str(&str, "two");
+	Vector_push_str(&str, "three");
+	Vector_push_str(&str, "four");
+	Vector_push_str(&str, "five");
+
+	puts("");
+
+	for (int i = 0; i < Vector_size(str); i++)
+		printf("data: 0x%p -> %s, capacity: %4d\n",
+			&str[i],
+			str[i],
+			Vector_capacity(str)
+		);
+
+	Vector_destroy(str);
 
 	_getch();
 
