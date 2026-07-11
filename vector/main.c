@@ -61,10 +61,10 @@ static void* Vector_check_capacity(Vector *vector)
 	{
 		vector->capacity *= VECTOR_CAPACITY_FACTOR;
 		vector = realloc(vector, sizeof(Vector) + vector->type_size * vector->capacity);
-    
-    	#ifdef VECTOR_DEBUG
-    		printf("Vector_alloc: 0x%p\n", vector);
-    	#endif
+	
+		#ifdef VECTOR_DEBUG
+			printf("Vector_alloc: 0x%p\n", vector);
+		#endif
 	}
 	return vector;
 }
