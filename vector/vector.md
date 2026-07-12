@@ -56,7 +56,7 @@
 ### Code examples
 
 #### Primitive data types
-
+```c
 	// Create Vector instance
 	Vector ints;
 
@@ -93,9 +93,9 @@
 
 	// Destroy vector
 	Vector_destroy(&ints);
-
+```
 #### Pointers eexample
-
+```c
 	typedef struct { int x, y; } Point;
 
 	// Create Vector instance
@@ -136,9 +136,9 @@
 
 	// Destroy vector
 	Vector_destroy(&ptrs);
-
+```
 #### String example (char*)
-
+```c
 	// Create Vector instance
 	Vector vstr;
 
@@ -167,6 +167,6 @@
 
 	// Clear vector
 	Vector_clear(&vstr);
-
+```
 	// Destroy vector
 	Vector_destroy(&vstr);
