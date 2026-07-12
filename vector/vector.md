@@ -167,6 +167,7 @@
 
 	// Clear vector
 	Vector_clear(&vstr);
-```
+
 	// Destroy vector
 	Vector_destroy(&vstr);
+```
