@@ -16,8 +16,8 @@ PUBLIC API
 	Vector_capacity     size_t Vector_capacity(T*);                               Get the vector capacity
 	Vector_push_back    void Vector_push_back(T*);                                Append new element to the end of the vector
 	Vector_pop_back     void Vector_pop_back(T*);                                 Remove the last element from the vector
-	Vector_push         void Vector_push(T*);                                     Append new element to the end of the vector (Alias for 'Vector_push_back')
-	Vector_pop          void Vector_pop(T*);                                      Remove the last element from the vector (Alias for 'Vector_pop_back')
+	Vector_push         void Vector_push(T*);                                     Alias for 'Vector_push_back'
+	Vector_pop          void Vector_pop(T*);                                      Alias for 'Vector_pop_back'
 	Vector_clear        void Vector_clear(T*);                                    Clear the vector
 	Vector_destroy      void Vector_destroy(T*);                                  Destroy the vector
 
