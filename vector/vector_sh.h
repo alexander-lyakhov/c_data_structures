@@ -6,14 +6,18 @@
 
 PUBLIC API
 	
-	Method             Signature                                                 Description
+	Method              Signature                                                 Description
 	-----------------------------------------------------------------------------------------------------------------------------
 	Vector_init         void* Vector_init(short type_size, size_t _capacity);     Create and init vector
 	Vector_get          Vector* Vector_get(T*);                                   Get the pointer to the vector header (metadata)
+	Vector_front        T* Vector_front(T*);                                      Get the pointer to the first element of the vector or NULL if the vector is empty
+	Vector_back         T* Vector_back(T*);                                       Get the pointer last element of the vector or NULL if the vector is empty
 	Vector_size         size_t Vector_size(T*);                                   Get the vector elements count
 	Vector_capacity     size_t Vector_capacity(T*);                               Get the vector capacity
-	Vector_push         void Vector_push(T*);                                     Append new element to the end of the vector
-	Vector_pop          void Vector_pop(T*);                                      Remove the last element from the vector
+	Vector_push_back    void Vector_push_back(T*);                                Append new element to the end of the vector
+	Vector_pop_back     void Vector_pop_back(T*);                                 Remove the last element from the vector
+	Vector_push         void Vector_push(T*);                                     Append new element to the end of the vector (Alias for 'Vector_push_back')
+	Vector_pop          void Vector_pop(T*);                                      Remove the last element from the vector (Alias for 'Vector_pop_back')
 	Vector_clear        void Vector_clear(T*);                                    Clear the vector
 	Vector_destroy      void Vector_destroy(T*);                                  Destroy the vector
 
@@ -58,6 +62,9 @@ HOW TO USE
 	{
 		printf("Vector_front: %4d\n", arr[0]);
 		printf("Vector_back:  %4d\n", arr[Vector_size(arr) - 1]);
+
+		printf("Vector_front: %4d\n", *Vector_front(arr));
+		printf("Vector_back:  %4d\n", *Vector_back(arr));
 	}
 
 	// Destroy the vector
@@ -148,30 +155,30 @@ typedef struct {
 void* Vector_init(short type_size, size_t _capacity);
 
 #define Vector_get(arr)      (Vector*)(arr) - 1
+#define Vector_front(arr)    ((Vector_get(arr))->count ? &((arr)[0]) : NULL)
+#define Vector_back(arr)     ((Vector_get(arr))->count ? &((arr)[(Vector_get(arr))->count - 1]) : NULL)
 #define Vector_size(arr)     (Vector_get(arr))->count
 #define Vector_capacity(arr) (Vector_get(arr))->capacity
 #define Vector_clear(arr)    (Vector_get(arr))->count = 0
 #define Vector_destroy(arr)  free(Vector_get(arr))
 
-#define Vector_pop(arr) { \
-	Vector *vector = Vector_get(arr); \
-	if (vector->count) vector->count--; \
-} \
-
-#define Vector_push_(arr, value) { \
-	Vector *vector = (Vector*)Vector_check_capacity(Vector_get(*arr)); \
-	*arr = (void*)(vector + 1); \
-	(*arr)[vector->count++] = value; \
-} \
-
-#define Vector_push(arr, value) { \
+#define Vector_push_back(arr, value) { \
 	Vector *vector = (Vector*)Vector_check_capacity(Vector_get(arr)); \
 	arr = (void*)(vector + 1); \
 	arr[vector->count++] = (value); \
 } \
 
-// #define VECTOR_IMPLEMENTATION // debug
+#define Vector_pop_back(arr) { \
+	Vector *vector = Vector_get(arr); \
+	if (vector->count) vector->count--; \
+} \
 
+
+// Aliases
+#define Vector_push Vector_push_back
+#define Vector_pop  Vector_pop_back
+
+// #define VECTOR_IMPLEMENTATION // debug
 #ifdef VECTOR_IMPLEMENTATION
 
 // =============================================================================

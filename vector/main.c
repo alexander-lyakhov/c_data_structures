@@ -40,12 +40,14 @@ int main()
 			Vector_capacity(arr)
 		);
 
-	Vector_clear(arr);
+	// Vector_clear(arr);
 
 	if (Vector_size(arr))
 	{
 		printf("Vector_front: %4d\n", arr[0]);
 		printf("Vector_back:  %4d\n", arr[Vector_size(arr) - 1]);
+		printf("Vector_front: %4d\n", *Vector_front(arr));
+		printf("Vector_back:  %4d\n", *Vector_back(arr));
 	}
 	Vector_destroy(arr);
 
@@ -89,9 +91,9 @@ int main()
 
 	Point **p = Vector_init(sizeof(Point), 2);
 
-	Vector_push(p, &p1);
-	Vector_push(p, &p2);
-	Vector_push(p, &p3);
+	Vector_push_back(p, &p1);
+	Vector_push_back(p, &p2);
+	Vector_push_back(p, &p3);
 
 	p[0] = &p4;
 
