@@ -1,3 +1,134 @@
+/********************************************************************************
+	Simple generic Vector implementation for C language.
+	STB-style single-header-file width hidden meta-data.
+	Inspired by stb_ds.h: https://github.com/nothings/stb/blob/master/stb_ds.h
+********************************************************************************
+
+PUBLIC API
+	
+	Method             Signature                                                 Description
+	-----------------------------------------------------------------------------------------------------------------------------
+	Vector_init         void* Vector_init(short type_size, size_t _capacity);     Create and init vector
+	Vector_get          Vector* Vector_get(T*);                                   Get the pointer to the vector header (metadata)
+	Vector_size         size_t Vector_size(T*);                                   Get the vector elements count
+	Vector_capacity     size_t Vector_capacity(T*);                               Get the vector capacity
+	Vector_push         void Vector_push(T*);                                     Append new element to the end of the vector
+	Vector_pop          void Vector_pop(T*);                                      Remove the last element from the vector
+	Vector_clear        void Vector_clear(T*);                                    Clear the vector
+	Vector_destroy      void Vector_destroy(T*);                                  Destroy the vector
+
+
+HOW TO USE
+
+// **************************************************************************************************
+//  Primitive data types example
+// **************************************************************************************************
+
+	// Create and init vector. 2nd parameter is desired vector capacity. If 0 then capacity set to default value.
+	int *arr = Vector_init(sizeof(int), 0);
+
+	// Append elements to the end of the vector
+	Vector_push(arr, 10);
+	Vector_push(arr, 20);
+	Vector_push(arr, 30);
+	Vector_push(arr, 40);
+	Vector_push(arr, 50);
+	Vector_push(arr, 60);
+
+	// Remove last element from the vector
+	Vector_pop(arr);
+
+	// Replace specific element (by index) in the vector
+	if (Vector_size(arr))
+		arr[0] = 11;
+
+	// Iterate through the vector and print it's values
+	for (int i = 0; i < Vector_size(arr); i++)
+		printf("data: 0x%p -> %d, capacity: %4zu\n",
+			&arr[i],
+			arr[i],
+			Vector_capacity(arr)
+		);
+
+	// Clear the vector (make it empty)
+	Vector_clear(arr);
+
+	// Check size of the vector and print it's first and last elements
+	if (Vector_size(arr))
+	{
+		printf("Vector_front: %4d\n", arr[0]);
+		printf("Vector_back:  %4d\n", arr[Vector_size(arr) - 1]);
+	}
+
+	// Destroy the vector
+	Vector_destroy(arr);
+
+
+// **************************************************************************************************
+//  Pointers eexample
+// **************************************************************************************************
+
+	typedef struct {
+		int x, y;
+	} Point;
+
+	Point p1 = {1, 2};
+	Point p2 = {3, 4};
+	Point p3 = {5, 6};
+	Point p4 = {7, 8};
+
+	// Init vector
+	Point **p = Vector_init(sizeof(Point), 0);
+
+	// Append elements to the end of the vector
+	Vector_push(p, &p1);
+	Vector_push(p, &p2);
+	Vector_push(p, &p3);
+
+	// Replace specific element (by index) in the vector
+	p[0] = &p4;
+
+	// Iterate through the vector and print it's values
+	for (int i = 0; i < Vector_size(p); i++)
+		printf("data: 0x%p -> x = %d, y = %d, capacity: %4zu\n",
+			&p[i],
+			p[i]->x,
+			p[i]->y,
+			Vector_capacity(p)
+		);
+
+	// Destroy the vector
+	Vector_destroy(p);
+
+
+// **************************************************************************************************
+//  String example (char*)
+// **************************************************************************************************
+
+	// Init vector
+	char **str = Vector_init(sizeof(char*), 0);
+
+	// Append elements to the end of the vector
+	Vector_push(str, "one");
+	Vector_push(str, "two");
+	Vector_push(str, "three");
+	Vector_push(str, "four");
+	Vector_push(str, "five");
+
+	// Replace specific element (by index) in the vector
+	str[0] = "Hello";
+
+	// Iterate through the vector and print it's values
+	for (int i = 0; i < Vector_size(str); i++)
+		printf("data: 0x%p -> %-8s, capacity: %4zu\n",
+			&str[i],
+			str[i],
+			Vector_capacity(str)
+		);
+
+	// Destroy the vector	
+	Vector_destroy(str);
+*/
 #ifndef _VECTOR_SH_H_
 #define _VECTOR_SH_H_
 
@@ -6,7 +137,6 @@
 
 #define VECTOR_DEFAULT_CAPACITY 256
 #define VECTOR_CAPACITY_FACTOR 1.5
-#define VECTOR_DEBUG
 
 typedef struct {
 	short type_size;
@@ -15,9 +145,7 @@ typedef struct {
 
 } Vector;
 
-// #define VECTOR_IMPLEMENTATION // debug
-
-#ifdef VECTOR_IMPLEMENTATION
+void* Vector_init(short type_size, size_t _capacity);
 
 #define Vector_get(arr)      (Vector*)(arr) - 1
 #define Vector_size(arr)     (Vector_get(arr))->count
@@ -36,20 +164,15 @@ typedef struct {
 	(*arr)[vector->count++] = value; \
 } \
 
-void* Vector_init(short type_size, size_t _capacity);
-void  Vector_pushi(int **data, int value);
-void  Vector_pushstr(char ***data, char *value);
+#define Vector_push(arr, value) { \
+	Vector *vector = (Vector*)Vector_check_capacity(Vector_get(arr)); \
+	arr = (void*)(vector + 1); \
+	arr[vector->count++] = (value); \
+} \
 
-#define Vector_push_backc   Vector_push_back_c
-#define Vector_push_backs   Vector_push_back_s
-#define Vector_push_backi   Vector_push_back_i
-#define Vector_push_backl   Vector_push_back_l
-#define Vector_push_backll  Vector_push_back_ll
-#define Vector_push_backf   Vector_push_back_f
-#define Vector_push_backd   Vector_push_back_d
-#define Vector_push_backld  Vector_push_back_ld
-#define Vector_push_backstr Vector_push_back_str
-#define Vector_push_backptr Vector_push_back_ptr
+// #define VECTOR_IMPLEMENTATION // debug
+
+#ifdef VECTOR_IMPLEMENTATION
 
 // =============================================================================
 // @@@ + Vector_init
@@ -64,7 +187,8 @@ void* Vector_init(short type_size, size_t _capacity)
 	vector->type_size = type_size;
 
 	#ifdef VECTOR_DEBUG
-		printf("Vector_alloc: 0x%p\n", vector);
+		printf("Vector meta address: 0x%p\n", vector);
+		printf("Vector data address: 0x%p\n", vector + 1);
 	#endif
 
 	return vector + 1;
@@ -80,76 +204,13 @@ static void* Vector_check_capacity(Vector *vector)
 		vector->capacity *= VECTOR_CAPACITY_FACTOR;
 		vector = (Vector*)realloc(vector, sizeof(Vector) + vector->type_size * vector->capacity);
 	
+
 		#ifdef VECTOR_DEBUG
-			printf("Vector_alloc: 0x%p\n", vector);
+			printf("Vector meta address: 0x%p\n", vector);
+			printf("Vector data address: 0x%p\n", vector + 1);
 		#endif
 	}
 	return vector;
-}
-
-// =============================================================================
-// @@@ + Vector_push_backc
-// =============================================================================
-void Vector_push_backc(char **data, char value)
-{
-	Vector_push_(data, value);
-	
-	#ifdef VECTOR_DEBUG
-		Vector *vector = Vector_get(*data);
-		printf("Vector_push_backc:  0x%p, 0x%p -> %c, capacity: %4zu\n", vector, &(*data)[vector->count - 1], (*data)[vector->count - 1], vector->capacity);
-	#endif
-}
-
-// =============================================================================
-// @@@ + Vector_push_backs
-// =============================================================================
-void Vector_push_backs(short **data, short value)
-{
-	Vector_push_(data, value);
-	
-	#ifdef VECTOR_DEBUG
-		Vector *vector = Vector_get(*data);
-		printf("Vector_push_backs:  0x%p, 0x%p -> %4d, capacity: %4zu\n", vector, &(*data)[vector->count - 1], (*data)[vector->count - 1], vector->capacity);
-	#endif
-}
-
-// =============================================================================
-// @@@ + Vector_pushi
-// =============================================================================
-void Vector_push_backi(int **data, int value)
-{
-	Vector_push_(data, value);
-	
-	#ifdef VECTOR_DEBUG
-		Vector *vector = Vector_get(*data);
-		printf("Vector_push_backi:  0x%p, 0x%p -> %4d, capacity: %4zu\n", vector, &(*data)[vector->count - 1], (*data)[vector->count - 1], vector->capacity);
-	#endif
-}
-
-// =============================================================================
-// @@@ + Vector_push_backl
-// =============================================================================
-void Vector_push_backl(long **data, long value)
-{
-	Vector_push_(data, value);
-	
-	#ifdef VECTOR_DEBUG
-		Vector *vector = Vector_get(*data);
-		printf("Vector_push_backl:  0x%p, 0x%p -> %l, capacity: %4zu\n", vector, &(*data)[vector->count - 1], (*data)[vector->count - 1], vector->capacity);
-	#endif
-}
-
-// =============================================================================
-// @@@ + Vector_pushstr
-// =============================================================================
-void Vector_push_backstr(char ***data, char *value)
-{
-	Vector_push_(data, value);
-	
-	#ifdef VECTOR_DEBUG
-		Vector *vector = Vector_get(*data);
-		printf("Vector_push_backstr:  0x%p, 0x%p -> %s, capacity: %4zu\n", vector, &(*data)[vector->count - 1], (*data)[vector->count - 1], vector->capacity);
-	#endif
 }
 
 #endif // end of VECTOR_IMPLEMENTATION
